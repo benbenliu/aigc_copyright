@@ -1,1 +1,1 @@
-# aigc_copyright
+# aigc_market
