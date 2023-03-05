@@ -20,7 +20,7 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 contract DavinciMind is ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721BurnableUpgradeable, AccessControlUpgradeable, ReentrancyGuardUpgradeable {
     using SafeMathUpgradeable for uint256;
 
-    mapping(uint256 => bytes32) private tokenIdToEncryptionKey;
+    mapping(uint256 => string) private tokenIdToEncryptionKey;
     // tokenId to encryptor spec
     mapping(uint256 => string) private tokenIdToEncryptor;
     mapping(uint256 => string) public tokenIdToDocId;
@@ -38,8 +38,7 @@ contract DavinciMind is ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721Bu
     function initialize() initializer public {
         __ERC721_init("Davinci Mind", "AIGC");
 
-        // todo: change to our pindata
-        baseURI = "https://dev-api-1.rns.id/api/v2/portal/identity/nft/";
+        baseURI = "https://gateway.pinata.cloud/ipfs/";
         __AccessControl_init();
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(SECONDARY_ADMIN_ROLE, msg.sender);
@@ -57,7 +56,7 @@ contract DavinciMind is ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721Bu
         isBlockedAddress[_wallet] = _isBlocked;
     }
 
-    function getEncryptionKey(uint256 _tokenId) external view returns (bytes32) {
+    function getEncryptionKey(uint256 _tokenId) external view returns (string memory) {
         _requireMinted(_tokenId);
         require(msg.sender == ownerOf(_tokenId));
         return tokenIdToEncryptionKey[_tokenId];
@@ -74,7 +73,7 @@ contract DavinciMind is ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721Bu
         return tokenIdToDocId[_tokenId];
     }
 
-    function setEncryptionKey(uint256 _tokenId, bytes32 _encryptionKey) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    function setEncryptionKey(uint256 _tokenId, string memory _encryptionKey) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _requireMinted(_tokenId);
         tokenIdToEncryptionKey[_tokenId] = _encryptionKey;
     }
@@ -89,7 +88,7 @@ contract DavinciMind is ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721Bu
         tokenIdToDocId[_tokenId] = _docId;
     }
 
-    function mintAigcNft(string memory _docId, address _wallet, bytes32 _encryptionKey, string memory _encryptor) external onlyRole(SECONDARY_ADMIN_ROLE) nonReentrant {
+    function mintAigcNft(string memory _docId, address _wallet, string memory _encryptionKey, string memory _encryptor) external onlyRole(SECONDARY_ADMIN_ROLE) nonReentrant{
         require(!isBlockedAddress[_wallet], "the wallet is blacklisted");
         uint256 tokenId = totalSupply().add(1);
         _safeMint(_wallet, tokenId);

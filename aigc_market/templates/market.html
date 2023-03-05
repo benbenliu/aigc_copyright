@@ -9,38 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DavinciMind Creatior Page</title>
     <script src="https://cdn.jsdelivr.net/npm/@metamask/detect-provider"></script>
-<!--    <script src="{% static 'js/metamask.js' %}"></script>-->
-    <script>document.addEventListener("DOMContentLoaded", function() {
-
-const connectWalletBtn = document.getElementById("connect-wallet-btn");
-const docForm = document.getElementById("doc-form");
-const walletAddressInput = document.getElementById("wallet-address");
-
-connectWalletBtn.addEventListener("click", async () => {
-  try {
-    // Connect to Metamask
-    const provider = await detectEthereumProvider();
-    if (provider) {
-      await provider.request({ method: "eth_requestAccounts" });
-      console.log("Connected to wallet:", provider.selectedAddress);
-      walletAddressInput.value = provider.selectedAddress;
-    } else {
-      console.log("Please install Metamask to connect your wallet");
-    }
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-docForm.addEventListener("submit", (event) => {
-  // Prevent the form from submitting before wallet address is obtained
-  if (!walletAddressInput.value) {
-    event.preventDefault();
-    console.log("Please connect your wallet before submitting the form");
-  }
-});
-
-});</script>
+    <script src="{% static 'js/metamask.js' %}"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cerulean/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -135,19 +104,8 @@ docForm.addEventListener("submit", (event) => {
         </ul>
       </div>
     </nav>
-  <button id="connect-wallet-btn">Connect Wallet</button>
-  <form id="doc-form" name="doc-form" method="POST" action="{% url 'register_doc' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label for="model-name">Model Name:</label>
-    <input type="text" name="model_name" id="model-name" required><br><br>
-    <label for="model-version">Model Version:</label>
-    <input type="text" name="model_version" id="model-version" required><br><br>
-    <label for="prompts">Prompts:</label>
-    <textarea name="prompts" id="prompts" required></textarea><br><br>
-    <input type="hidden" name="wallet_address" id="wallet-address" required>
-      <label for="media_file">Your created content</label>
-    <input type="file" id="media_file" name="media_file" accept=".jpg,.jpeg,.png,.mp4,.webm" required><br><br>
-    <input type="submit" value="Submit">
-  </form>
+    <div class="container">
+      <h1>Coming Soon!</h1>
+    </div>
 </body>
 </html>
